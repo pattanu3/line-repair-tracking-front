@@ -63,6 +63,9 @@
         <button type="submit">ส่งข้อมูลแจ้งซ่อม</button>
     </form>
 
+    <h1>ทดสอบ LIFF get LineUserID</h1>
+    <p>Your LINE ID: <span id="user-id" style="color: blue; font-weight: bold;">กำลังโหลด...</span></p>
+
     <script>
         let userId = "";
 
@@ -72,6 +75,13 @@
                 const profile = await liff.getProfile();
                 userId = profile.userId;
                 document.getElementById('lineUserId').value = userId;
+
+                // แสดงผลบนหน้าจอ
+                document.getElementById('user-id').innerText = userId;
+
+                // Debug ดูใน Console (กด F12 ใน Browser)
+                console.log("Profile:", profile);
+                console.log("User ID:", userId);
             } else {
                 liff.login();
             }
