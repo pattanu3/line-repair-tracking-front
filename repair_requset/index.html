@@ -4,13 +4,6 @@
     <meta charset="UTF-8">
     <title>แจ้งซ่อมอุปกรณ์</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <style>
-        body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; }
-        input, textarea, select { width: 100%; padding: 8px; box-sizing: border-box; }
-        button { background-color: #00b900; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; }
-    </style>
 </head>
 <body>
     <h2>แบบฟอร์มแจ้งซ่อม</h2>
@@ -59,9 +52,9 @@
         </div>
         
         
-        <input type="text" id="lineUserId" disabled>
+        <input type="text" id="lineUserId">
 
-        
+
         <button type="submit">ส่งข้อมูลแจ้งซ่อม</button>
     </form>
 
@@ -74,13 +67,6 @@
                 const profile = await liff.getProfile();
                 userId = profile.userId;
                 document.getElementById('lineUserId').value = userId;
-
-                // แสดงผลบนหน้าจอ
-                document.getElementById('user-id').innerText = userId;
-
-                // Debug ดูใน Console (กด F12 ใน Browser)
-                console.log("Profile:", profile);
-                console.log("User ID:", userId);
             } else {
                 liff.login();
             }
@@ -94,6 +80,7 @@
                 phoneNumber: document.getElementById('phoneNumber').value,
                 queueId: "A" + Date.now().toString().slice(-6), // สุ่มเลขคิวเบื้องต้น
                 lineUserId: userId,
+                technicianID: null,
                 deviceType: document.getElementById('deviceType').value,
                 problemType: document.getElementById('problemType').value,
                 problemDetail: document.getElementById('problemDetail').value,
