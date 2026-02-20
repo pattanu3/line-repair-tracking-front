@@ -87,17 +87,18 @@
 
             // ... (ส่วนการเตรียม data เหมือนเดิม)
             const repairData = {
+                // ตรวจสอบชื่อ Key ด้านซ้ายมือให้ตรงกับ Schema ใน FastAPI เป๊ะๆ
+                lineUserId: document.getElementById('lineUserId').value, // ต้องชื่อ 'lineUserId'
                 fullName: document.getElementById('fullName').value,
                 phoneNumber: document.getElementById('phoneNumber').value,
-                queueId: "A" + Date.now().toString().slice(-6), // สุ่มเลขคิวเบื้องต้น
-                lineUserId: document.getElementById('user-id').value,
-                technicianID: null,
+                queueId: "A" + Math.floor(Math.random() * 900000 + 100000),
                 deviceType: document.getElementById('deviceType').value,
                 problemType: document.getElementById('problemType').value,
                 problemDetail: document.getElementById('problemDetail').value,
+                address: document.getElementById('address').value,
                 deliveryDate: document.getElementById('deliveryDate').value,
                 pickupDate: document.getElementById('pickupDate').value,
-                address: document.getElementById('address').value
+                technicianID: null
             };
 
             try {
