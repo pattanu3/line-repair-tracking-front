@@ -5,6 +5,30 @@
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body>
-    ................
+    <h1>ทดสอบ LIFF get LineUserID</h1>
+    <p>your LINE ID : <span id="user-id"></span> </p>
+
+    <script>
+        async function main() {
+            // 1. เริ่มการทำงาน LIFF
+            await liff.init({ liffId: "YOUR_LIFF_ID" }); 
+
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+                const profile = await liff.getProfile();
+                const userId = profile.userId;
+
+
+                const spanBox = document.getElementById('user-id');
+                infoDiv.innerHTML = `${userId}`
+
+                console.log(liff)
+                console.log(profile)
+                console.log(userId)
+            }
+        }
+        main();
+    </script>
 </body>
 </html>
