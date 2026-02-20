@@ -1,54 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-    <title>แจ้งซ่อม</title>
+    <meta charset="UTF-8">
+    <title>แจ้งซ่อมอุปกรณ์</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, textarea, select { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { background-color: #00b900; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <h1>แจ้งซ่อมของคุณ</h1>
-    <div id="repair-info">กรอบข้อมูลการแจ้งซ่อม...</div>
-    <form action="" method="post">
-        <label for="">name</label>
-        <input type="text">
-        <label for="">type</label>
-        <input type="text">
-        <label for="">problem</label>
-        <input type="text">
-        <button type="submit"></button>
+    <h2>แบบฟอร์มแจ้งซ่อม</h2>
+    <form id="repairForm">
+        <div class="form-group">
+            <label>ชื่อ-นามสกุล</label>
+            <input type="text" id="fullName">
+        </div>
+        <div class="form-group">
+            <label>เบอร์โทรศัพท์</label>
+            <input type="text" id="phoneNumber">
+        </div>
+        
+        <div class="form-group">
+            <label>ที่อยู่สำหรับรับ-ส่งเครื่อง</label>
+            <textarea id="address" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>ประเภทอุปกรณ์</label>
+            <select id="deviceType">
+                <option value="Notebook">โน๊ตบุค</option>
+                <option value="Computer">คอม</option>
+                <option value="Printer">เครื่องพิมพ์</option>
+                <option value="iPhone">โทรศัพไอโฟน</option>
+            </select>
+            
+        </div>
+        <div class="form-group">
+            <label>อาการเสีย</label>
+            <input type="text" id="problemType" placeholder="เช่น เปิดไม่ติด, แบตเสื่อม" required>
+        </div>
+        <div class="form-group">
+            <label>รายละเอียดเพิ่มเติม</label>
+            <textarea id="problemDetail" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>วันนัดส่งเครื่อง</label>
+            <input type="date" id="deliveryDate">
+        </div>
+
+        <div class="form-group">
+            <label>วันนัดรับเครื่อง</label>
+            <input type="date" id="pickupDate">
+        </div>
+        
+        
+        <input type="hidden" id="lineUserId">
+        <button type="submit">ส่งข้อมูลแจ้งซ่อม</button>
     </form>
 
     <script>
-        async function main() {
-            // 1. เริ่มการทำงาน LIFF
-            await liff.init({ liffId: "YOUR_LIFF_ID" }); 
+        let userId = "";
 
-            if (!liff.isLoggedIn()) {
-                liff.login();
-            } else {
+        async function initLiff() {
+            await liff.init({ liffId: "YOUR_LIFF_ID" });
+            if (liff.isLoggedIn()) {
                 const profile = await liff.getProfile();
-                const userId = profile.userId;
-
-                // 2. เรียก API ของคุณที่เชื่อมกับ Neon (ใส่ URL ของ FastAPI ที่คุณรันไว้)
-                // เช่น https://your-fastapi-on-render.com/repairs/myrepair?lineId=...
-                fetch(`http://127.0.0.1:8000/repairs/create/myrepair?lineId=${userId}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        // const infoDiv = document.getElementById('repair-info');
-                        // if(data.id) {
-                        //     infoDiv.innerHTML = `
-                        //         <p>คิวที่: ${data.queueId}</p>
-                        //         <p>อุปกรณ์: ${data.deviceType}</p>
-                        //         <p>สถานะ: <b>${data.status}</b></p>
-                        //     `;
-                        // } else {
-                        //     infoDiv.innerText = "ไม่พบข้อมูลการแจ้งซ่อม";
-                        // }
-                        console.log(data)
-                    })
-                    .catch(err => console.error("Error:", err));
+                userId = profile.userId;
+                document.getElementById('lineUserId').value = userId;
+            } else {
+                liff.login();
             }
         }
-        main();
+
+        document.getElementById('repairForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const repairData = {
+                fullName: document.getElementById('fullName').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                queueId: "A" + Date.now().toString().slice(-6), // สุ่มเลขคิวเบื้องต้น
+                lineUserId: userId,
+                deviceType: document.getElementById('deviceType').value,
+                problemType: document.getElementById('problemType').value,
+                problemDetail: document.getElementById('problemDetail').value,
+                deliveryDate: document.getElementById('deliveryDate').value,
+                pickupDate: document.getElementById('pickupDate').value,
+                address: document.getElementById('address').value
+            };
+
+            try {
+                const response = await fetch('https://YOUR_BACKEND_URL/repairs/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(repairData)
+                });
+
+                if (response.ok) {
+                    alert("แจ้งซ่อมสำเร็จ! เจ้าหน้าที่จะติดต่อกลับโดยเร็ว");
+                    liff.closeWindow(); // ปิดหน้าต่าง LIFF
+                } else {
+                    alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+
+        initLiff();
     </script>
 </body>
 </html>
