@@ -7,6 +7,7 @@
 </head>
 <body>
     <h2>แบบฟอร์มแจ้งซ่อม</h2>
+    <p>Your LINE ID: <span id="user-id" style="color: blue; font-weight: bold;">กำลังโหลด...</span></p>
     <form id="repairForm">
         <div class="form-group">
             <label>ชื่อ-นามสกุล</label>
@@ -52,9 +53,7 @@
         </div>
         
         
-        <input type="text" id="lineUserId">
-
-
+        <input type="hidden" id="lineUserId">
         <button type="submit">ส่งข้อมูลแจ้งซ่อม</button>
     </form>
 
@@ -66,6 +65,8 @@
             if (liff.isLoggedIn()) {
                 const profile = await liff.getProfile();
                 userId = profile.userId;
+                // แสดงผลบนหน้าจอ
+                document.getElementById('user-id').innerText = userId;
                 document.getElementById('lineUserId').value = userId;
             } else {
                 liff.login();
