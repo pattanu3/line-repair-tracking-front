@@ -94,7 +94,7 @@
             };
 
             try {
-                const response = await fetch('https://YOUR_BACKEND_URL/repairs/create', {
+                const response = await fetch('http://127.0.0.1:8000/repairs/create', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(repairData)
