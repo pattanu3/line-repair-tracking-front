@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>แจ้งซ่อม</title>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+    <h1>แจ้งซ่อมของคุณ</h1>
+    <div id="repair-info">กรอบข้อมูลการแจ้งซ่อม...</div>
+    <form action="" method="post">
+        <label for="">name</label>
+        <input type="text">
+        <label for="">type</label>
+        <input type="text">
+        <label for="">problem</label>
+        <input type="text">
+        <button type="submit"></button>
+    </form>
+
+    <script>
+        async function main() {
+            // 1. เริ่มการทำงาน LIFF
+            await liff.init({ liffId: "YOUR_LIFF_ID" }); 
+
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+                const profile = await liff.getProfile();
+                const userId = profile.userId;
+
+                // 2. เรียก API ของคุณที่เชื่อมกับ Neon (ใส่ URL ของ FastAPI ที่คุณรันไว้)
+                // เช่น https://your-fastapi-on-render.com/repairs/myrepair?lineId=...
+                fetch(`http://127.0.0.1:8000/repairs/create/myrepair?lineId=${userId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        // const infoDiv = document.getElementById('repair-info');
+                        // if(data.id) {
+                        //     infoDiv.innerHTML = `
+                        //         <p>คิวที่: ${data.queueId}</p>
+                        //         <p>อุปกรณ์: ${data.deviceType}</p>
+                        //         <p>สถานะ: <b>${data.status}</b></p>
+                        //     `;
+                        // } else {
+                        //     infoDiv.innerText = "ไม่พบข้อมูลการแจ้งซ่อม";
+                        // }
+                        console.log(data)
+                    })
+                    .catch(err => console.error("Error:", err));
+            }
+        }
+        main();
+    </script>
+</body>
+</html>
