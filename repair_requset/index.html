@@ -84,11 +84,18 @@
         document.getElementById('repairForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             console.log("กำลังส่งข้อมูล..."); // เช็คว่าฟังก์ชันทำงานไหม
+            // ดึงค่า ID จากหน้าจอมาตรวจสอบก่อนส่ง
+            const currentLineId = document.getElementById("user-id").innerText;
+
+            if (!currentLineId || currentLineId === "กำลังโหลด...") {
+                alert("กรุณารอให้ระบบโหลด LINE ID ให้เสร็จก่อนครับ");
+                return;
+            }
 
             // ... (ส่วนการเตรียม data เหมือนเดิม)
             const repairData = {
                 // ตรวจสอบชื่อ Key ด้านซ้ายมือให้ตรงกับ Schema ใน FastAPI เป๊ะๆ
-                lineUserId: document.getElementById('lineUserId').value, // ต้องชื่อ 'lineUserId'
+                lineUserId: currentLineId,
                 fullName: document.getElementById('fullName').value,
                 phoneNumber: document.getElementById('phoneNumber').value,
                 queueId: "A" + Math.floor(Math.random() * 900000 + 100000),
