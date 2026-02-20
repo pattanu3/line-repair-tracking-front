@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ทดสอบ</title>
+    <meta charset="UTF-8">
+    <title>ทดสอบ LIFF</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body>
     <h1>ทดสอบ LIFF get LineUserID</h1>
-    <p>your LINE ID : <span id="user-id"></span> </p>
+    <p>Your LINE ID: <span id="user-id" style="color: blue; font-weight: bold;">กำลังโหลด...</span></p>
 
     <script>
         async function main() {
-            // 1. เริ่มการทำงาน LIFF
-            await liff.init({ liffId: "YOUR_LIFF_ID" }); 
+            try {
+                // 1. เริ่มการทำงาน LIFF (อย่าลืมเปลี่ยน YOUR_LIFF_ID เป็นของจริงจาก LINE Console)
+                await liff.init({ liffId: "YOUR_LIFF_ID" }); 
 
-            if (!liff.isLoggedIn()) {
-                liff.login();
-            } else {
-                const profile = await liff.getProfile();
-                const userId = profile.userId;
+                if (!liff.isLoggedIn()) {
+                    liff.login();
+                } else {
+                    const profile = await liff.getProfile();
+                    const userId = profile.userId;
 
+                    // แสดงผลบนหน้าจอ
+                    document.getElementById('user-id').innerText = userId;
 
-                const spanBox = document.getElementById('user-id');
-                infoDiv.innerHTML = `${userId}`
-
-                console.log(liff)
-                console.log(profile)
-                console.log(userId)
+                    // Debug ดูใน Console (กด F12 ใน Browser)
+                    console.log("Profile:", profile);
+                    console.log("User ID:", userId);
+                }
+            } catch (error) {
+                console.error("LIFF Error:", error);
+                document.getElementById('user-id').innerText = "เกิดข้อผิดพลาด: " + error.message;
             }
         }
         main();
