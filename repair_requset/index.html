@@ -83,7 +83,9 @@
 
         document.getElementById('repairForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+            console.log("กำลังส่งข้อมูล..."); // เช็คว่าฟังก์ชันทำงานไหม
+
+            // ... (ส่วนการเตรียม data เหมือนเดิม)
             const repairData = {
                 fullName: document.getElementById('fullName').value,
                 phoneNumber: document.getElementById('phoneNumber').value,
@@ -105,14 +107,18 @@
                     body: JSON.stringify(repairData)
                 });
 
+                const result = await response.json(); // อ่านคำตอบจาก Server
+
                 if (response.ok) {
                     alert("แจ้งซ่อมสำเร็จ! เจ้าหน้าที่จะติดต่อกลับโดยเร็ว");
-                    liff.closeWindow(); // ปิดหน้าต่าง LIFF
+                    liff.closeWindow();
                 } else {
-                    alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
+                    // ถ้า Server ตอบกลับมาเป็น Error (เช่น 422 หรือ 500)
+                    alert("Server Error: " + JSON.stringify(result.detail));
                 }
             } catch (error) {
-                console.error("Error:", error);
+                // ถ้าเชื่อมต่อ Server ไม่ได้เลย (เช่น URL ผิด หรือติด CORS)
+                alert("Network Error: " + error.message);
             }
         });
 
