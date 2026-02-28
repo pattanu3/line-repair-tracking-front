@@ -1,0 +1,398 @@
+body {
+    background-color: #f0f2f5;
+    font-family: 'Noto Sans Thai', sans-serif;
+}
+
+.mobile-container {
+    max-width: 480px;
+    margin: 0 auto;
+    background-color: #e6e6e6;
+    min-height: 100vh;
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-header {
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
+}
+
+.top-header p {
+    font-size: 12px;
+    margin: 0;
+    color: #666;
+}
+
+.welcome-banner {
+    background-color: #0044cc;
+    color: white;
+    /* padding: 15px 20px; */
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #002266;
+}
+
+.user-info-box {
+    background-color: #021d46;
+    display: flex;
+    align-items: center;
+    padding: 15px 30px 15px 20px;  
+    border-radius: 0 50px 50px 0; 
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.welcome-text h2 {
+    font-size: 14px;
+    margin: 0;
+    font-weight: normal;
+    color: #cccccc;
+}
+
+.welcome-text h3 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.welcome-instruction {
+    margin: auto; 
+    font-size: 22px;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.form-container {
+    background-color: white;
+    padding: 40px 50px;
+    /* margin: 15px; */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.input-group {
+    border: 2px solid #003399;
+    border-radius: 25px;
+    background-color: white;
+    overflow: hidden;
+    align-items: center;
+}
+
+.input-group-text {
+    background-color: white;
+    border-right: none;
+    /* border-color: #003399; */
+    color: #003399;
+    font-size: 15px;
+    border-radius: 20px 0 0 20px;
+    padding: 0px auto auto 0px;
+}
+
+.icon-circle {
+    background-color: #003399;
+    color: white;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-control, .form-select {
+    border-left: none;
+    border-radius: 0 20px 20px 0;
+    /* border-color: #003399; */
+    padding-left: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.no-icon {
+    border-radius: 20px !important;
+    border-color: #003399;
+    border: 2px solid #003399;
+}
+
+.form-label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-label.m-0{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.col-3.text-end {
+    padding-right: 0px;
+}
+
+/* .col-4.text-end {
+    width: 103px;
+} */
+
+.upload-btn {
+    background-color: #e9ecef;
+    border-radius: 20px;
+    padding: 8px 15px;
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.submit-btn {
+    background-color: #0044cc;
+    color: white;
+    border-radius: 25px;
+    padding: 8px;
+    width: 70%;
+    font-weight: bold;
+    font-size: large;
+    border: none;
+    display: block;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.submit-btn:hover {
+    background-color: #003399;
+}
+
+/* ######################### Modal ######################### */
+.modal-backdrop.show {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    background-color: rgba(0, 0, 0, 0.4); 
+    opacity: 1 !important; 
+}
+
+.modal-content {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.custom-modal {
+    width: 85%;
+    border-radius: 20px;
+    overflow: hidden;
+    border: none;
+}
+
+.modal-top {
+    background-color: #04142c; 
+    color: white;
+    padding: 25px 20px;
+}
+
+.mb-1 {
+    font-size: 28px;
+}
+.mb-0 {
+    font-size: 18px;
+}
+.modal-bottom {
+    background-color: white;
+    padding: 20px;
+    font-weight: bold;
+}
+
+.confirm-data-row {
+    background-color: #f4f6f9; 
+    border-radius: 25px;
+    padding: 5px 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #04142c;
+}
+
+.btn-cancel {
+    background-color: #e6e6e6;
+    color: #333;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-confirm {
+    background-color: #0044cc;
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-confirm:hover {
+    background-color: #003399;
+    color: white;
+}
+
+
+/* ############################# Queue ############################# */
+.queue-summary-box1 {
+    background-color: #09348a;
+    border-radius: 20px;
+    padding: 20px 10px;
+    text-align: center;
+    height: 100%;
+}
+
+.queue-summary-box2 {
+    background-color: #2b65d8;
+    border-radius: 20px;
+    padding: 20px 10px;
+    text-align: center;
+    height: 100%;
+}
+
+.queue-summary-number {
+    font-size: 84px;
+    font-weight: 700;
+    line-height: 1;
+    margin: 10px 0;
+}
+
+.form-container{
+    color: #ffffff; 
+}
+
+.d-flex {
+    margin-left: 20%;
+}
+
+.waitqueue{
+    font-size: 14px;
+    font-weight: lighter;
+}
+
+.wait {
+    font-size: 18px;
+    font-weight: lighter;
+    /* margin-left: 20px; */
+}
+
+.line {
+    margin: 5px 0px 5px 0px;
+}
+
+/* ##################################### Tracking ##################################### */
+.linetrack {
+    color: #000;
+    margin: 5px 0px 5px 0px;
+}
+.timeline-container {
+    position: relative;
+    padding-left: 35px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 11px;
+    height: 100%;
+    width: 3px;
+    background-color: #ffffff;
+}
+
+.timeline-progress {
+    position: absolute;
+    top: -5px;
+    left: 2px;
+    width: 20px;
+    border-radius: 10px;
+    background-color: #e7e7e7;
+    z-index: 1;
+    height: 50%; 
+    transition: height 0.5s ease;
+}
+
+.timeline-step {
+    position: relative;
+    margin-bottom: 25px;
+    z-index: 2;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -40px;
+    top: -5px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: white; 
+    /* border: 3px solid #dee2e6; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-step.completed .timeline-dot {
+    border-color: #a8a8a8;
+    background-color: #a8a8a8;
+    left: -29px;
+    top: 5px;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+}
+
+.timeline-step.active .timeline-dot {
+    /* border-color: #0044cc; */
+    background-color: white;
+    border-width: 5px;
+}
+
+.timeline-step.completed .timeline-desc {
+    display: none;
+}
+
+.timeline-step.active .timeline-title {
+    /* color: #0044cc; */
+    color: #131313;
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.timeline-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #797979;
+    margin-bottom: 2px;
+}
+
+.timeline-desc {
+    font-size: 12px;
+    color: #777;
+}
+
+.queue-tag {
+    color: #04142c;
+}
