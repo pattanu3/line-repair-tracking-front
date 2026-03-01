@@ -244,7 +244,6 @@
             const dd = String(today.getDate()).padStart(2, '0');
             const todayFormatted = `${yyyy}-${mm}-${dd}`; // จะได้ "2026-03-01"
             
-            full_address = document.getElementById('inputAddressMain').value + " " + document.getElementById('inputSubDistrict').value + " " + document.getElementById('inputDistrict').value; + " " + document.getElementById('inputProvince').value; + " " + document.getElementById('inputZip').value;
             // ... (ส่วนการเตรียม data เหมือนเดิม)
             const repairData = {
                 // ตรวจสอบชื่อ Key ด้านซ้ายมือให้ตรงกับ Schema ใน FastAPI เป๊ะๆ
@@ -255,7 +254,7 @@
                 deviceType: document.getElementById('inputDevice').value,
                 problemType: document.getElementById('inputProblem').value,
                 problemDetail: document.getElementById('inputDetail').value,
-                address: full_address,
+                address: document.getElementById("modalAddress").textContent,
                 deliveryDate: todayFormatted,
                 pickupDate: document.getElementById('inputDate').value,
             };
