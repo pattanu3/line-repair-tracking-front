@@ -16,17 +16,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<p >Your LINE ID: <span id="user-id" style="color: blue; font-weight: bold;">กำลังโหลด...</span></p>
 <div class="mobile-container">
-    
-    <div class="top-header">
-        <div>
-            <h1>I SOM CPU</h1>
-            <p>isomcpu.repair.net</p>
-        </div>
-        <i class="fa-solid fa-xmark fs-3 text-secondary"></i>
-    </div>
-
     <div class="welcome-banner p-0">  
         <div class="user-info-box">
             <img src="https://placehold.co/100x100?text=Profile" alt="Profile" class="profile-pic">
@@ -206,7 +197,7 @@
 
                 <div class="d-flex justify-content-center gap-4 mt-4">
                     <button type="button" class="btn btn-cancel rounded-pill px-4" data-bs-dismiss="modal">แก้ไขข้อมูล</button>
-                    <button type="button" class="btn btn-confirm rounded-pill px-4">ยืนยัน</button>
+                    <button type="button" class="btn btn-confirm rounded-pill px-4" id="ConfirmDate">ยืนยัน</button>
                 </div>
 
             </div>
@@ -214,7 +205,84 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+
+<script>
+    let userId = "";
+    initLiff();
+    async function initLiff() {
+            try {
+                // 1. เริ่มการทำงาน LIFF (อย่าลืมเปลี่ยน YOUR_LIFF_ID เป็นของจริงจาก LINE Console)
+                await liff.init({ liffId: "2009179011-zi2JZ0h4" }); 
+                if (!liff.isLoggedIn()) {
+                    liff.login();
+                } else {
+                    const profile = await liff.getProfile();
+                    const userId = profile.userId;
+
+                    // แสดงผลบนหน้าจอ
+                    document.getElementById('user-id').innerText = userId;
+                    document.getElementById('lineUserId').value = userId;
+                }
+            } catch (error) {
+                console.error("LIFF Error:", error);
+                document.getElementById('user-id').innerText = "เกิดข้อผิดพลาด: " + error.message;
+            }
+        }
+</script>
+<script src="script.js">
+    
+    Confirmform = document.getElementById('ConfirmDate');
+    Confirmform.addEventListener("click",async function (e){
+        e.preventDefault();
+            console.log("กำลังส่งข้อมูล..."); // เช็คว่าฟังก์ชันทำงานไหม
+            // ✅ ดึงค่าโดยตรงจากตัวหนังสือสีน้ำเงินที่โชว์บนหน้าจอ (span id="user-id")
+            const lineIdFromSpan = document.getElementById('user-id').innerText;
+
+            // ตรวจสอบเบื้องต้น ถ้ายังโหลดไม่เสร็จไม่ให้ส่ง
+            if (!lineIdFromSpan || lineIdFromSpan === "กำลังโหลด...") {
+                alert("กรุณารอให้ระบบโหลด LINE ID ให้สำเร็จก่อนครับ");
+                return;
+            }
+            const now = new Date()
+            full_address = document.getElementById('inputAddressMain').value + " " + document.getElementById('inputSubDistrict').value + " " + document.getElementById('inputDistrict').value; + " " + document.getElementById('inputProvince').value; + " " + document.getElementById('inputZip').value;
+            // ... (ส่วนการเตรียม data เหมือนเดิม)
+            const repairData = {
+                // ตรวจสอบชื่อ Key ด้านซ้ายมือให้ตรงกับ Schema ใน FastAPI เป๊ะๆ
+                lineUserId: lineIdFromSpan,
+                fullName: document.getElementById('inputName').value,
+                phoneNumber: document.getElementById('inputPhone').value,
+                queueId: "A" + Math.floor(Math.random() * 900000 + 100000),
+                deviceType: document.getElementById('inputDevice').value,
+                problemType: document.getElementById('inputProblem').value,
+                problemDetail: document.getElementById('inputDetail').value,
+                address: full_address,
+                deliveryDate: now.getDate(),
+                pickupDate: document.getElementById('inputDate').value,
+            };
+
+            try {
+                const response = await fetch('https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(repairData)
+                });
+
+                const result = await response.json(); // อ่านคำตอบจาก Server
+
+                if (response.ok) {
+                    alert("แจ้งซ่อมสำเร็จ! เจ้าหน้าที่จะติดต่อกลับโดยเร็ว");
+                    liff.closeWindow();
+                } else {
+                    // ถ้า Server ตอบกลับมาเป็น Error (เช่น 422 หรือ 500)
+                    alert("Server Error: " + JSON.stringify(result.detail));
+                }
+            } catch (error) {
+                // ถ้าเชื่อมต่อ Server ไม่ได้เลย (เช่น URL ผิด หรือติด CORS)
+                alert("Network Error: " + error.message);
+            }
+        
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
