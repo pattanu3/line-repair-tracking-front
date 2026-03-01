@@ -206,8 +206,10 @@
     </div>
 </div>
 
-
-<script>
+<script src="script.js">
+    
+    
+    Confirmform = document.getElementById('ConfirmDate');
     let userId = "";
     initLiff();
     async function initLiff() {
@@ -229,11 +231,8 @@
                 document.getElementById('user-id').innerText = "เกิดข้อผิดพลาด: " + error.message;
             }
         }
-</script>
-<script src="script.js">
-    
-    
-    Confirmform = document.getElementById('ConfirmDate');
+
+
     Confirmform.addEventListener("click",async function (e){
         e.preventDefault();
             console.log("กำลังส่งข้อมูล..."); // เช็คว่าฟังก์ชันทำงานไหม
