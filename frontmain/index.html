@@ -205,31 +205,7 @@
 </div>
 
 <script src="script.js">
-    
-    
     Confirmform = document.getElementById('ConfirmDate');
-    let userId = "";
-    initLiff();
-    async function initLiff() {
-            try {
-                // 1. เริ่มการทำงาน LIFF (อย่าลืมเปลี่ยน YOUR_LIFF_ID เป็นของจริงจาก LINE Console)
-                await liff.init({ liffId: "2009179011-zi2JZ0h4" }); 
-                if (!liff.isLoggedIn()) {
-                    liff.login();
-                } else {
-                    const profile = await liff.getProfile();
-                    const userId = profile.userId;
-
-                    // แสดงผลบนหน้าจอ
-                    document.getElementById('user-id').innerText = userId;
-                }
-            } catch (error) {
-                console.error("LIFF Error:", error);
-                document.getElementById('user-id').innerText = "เกิดข้อผิดพลาด: " + error.message;
-            }
-        }
-
-
     Confirmform.addEventListener("click",async function (e){
         e.preventDefault();
             console.log("กำลังส่งข้อมูล..."); // เช็คว่าฟังก์ชันทำงานไหม
@@ -281,6 +257,31 @@
         
     });
 </script>
+
+<script>
+    let userId = "";
+    initLiff();
+    async function initLiff() {
+            try {
+                // 1. เริ่มการทำงาน LIFF (อย่าลืมเปลี่ยน YOUR_LIFF_ID เป็นของจริงจาก LINE Console)
+                await liff.init({ liffId: "2009179011-zi2JZ0h4" }); 
+                if (!liff.isLoggedIn()) {
+                    liff.login();
+                } else {
+                    const profile = await liff.getProfile();
+                    const userId = profile.userId;
+
+                    // แสดงผลบนหน้าจอ
+                    document.getElementById('user-id').innerText = userId;
+                }
+            } catch (error) {
+                console.error("LIFF Error:", error);
+                document.getElementById('user-id').innerText = "เกิดข้อผิดพลาด: " + error.message;
+            }
+        }
+</script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
