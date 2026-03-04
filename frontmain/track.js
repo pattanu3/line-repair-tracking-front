@@ -36,13 +36,9 @@ async function initTrackPage() {
             const profile = await liff.getProfile();
             const userId = profile.userId;
 
-            console.log(profile.userId);
-            console.log(profile.displayName);
-            console.log(profile.pictureUrl);
-            console.log(profile.statusMessage);
-
-            document.getElementById('user-id').innerText = userId;
-
+            console.log(profile);
+            console.log(userId);
+        
             // แสดงผลบนหน้าจอ
             // อัปเดตชื่อ LINE ลูกค้าบน Banner
             const welcomeText = document.querySelector('.welcome-text h3');
@@ -52,7 +48,7 @@ async function initTrackPage() {
             if(profilePic) profilePic.src = profile.pictureUrl || "https://placehold.co/100x100?text=Profile";
 
             // ไปดึงข้อมูลงานซ่อมจาก Database
-            fetchRepairData(userId);
+            fetchRepairData(profile.userId);
         } else {
             liff.login();
         }
@@ -63,14 +59,14 @@ async function initTrackPage() {
 }
 
 // 4. ดึงข้อมูลจาก FastAPI
-async function fetchRepairData(userId) {
+async function fetchRepairData(lineUserId) {
     console.log("fetchRepairData Work");
     // ตรวจสอบเบื้องต้น ถ้ายังโหลดไม่เสร็จไม่ให้ส่ง
-    while (!userId) {
+    while (!lineUserId) {
         console.log("กรุณารอให้ระบบโหลด LINE ID ให้สำเร็จก่อนครับ");
     }
     try {
-        const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${userId}`);
+        const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${lineUserId}`);
         if (!response.ok) {
             alert("ยังไม่มีข้อมูลแจ้งซ่อมในระบบ หรือซ่อมเสร็จสิ้นไปแล้วครับ");
             return;
