@@ -215,6 +215,7 @@
                 } else {
                     const profile = await liff.getProfile();
                     const userId = profile.userId;
+                    console.log(profile.JSON);
 
                     // แสดงผลบนหน้าจอ
                     document.getElementById('user-id').innerText = userId;
