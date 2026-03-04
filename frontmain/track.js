@@ -24,15 +24,24 @@ const statusToTimelineMap = {
 
 // 3. เริ่มต้นการทำงานของหน้าเว็บ
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("page load");
     initTrackPage();
 });
 
 async function initTrackPage() {
+    console.log("initTrackPage load");
     try {
         await liff.init({ liffId: LIFF_ID });
         if (liff.isLoggedIn()) {
             const profile = await liff.getProfile();
-            
+            console.log(profile.userId);
+            console.log(profile.displayName);
+            console.log(profile.pictureUrl);
+            console.log(profile.statusMessage);
+
+            document.getElementById('user-id').innerText = userId;
+
+            // แสดงผลบนหน้าจอ
             // อัปเดตชื่อ LINE ลูกค้าบน Banner
             const welcomeText = document.querySelector('.welcome-text h3');
             if(welcomeText) welcomeText.innerText = `- ${profile.displayName} -`;
