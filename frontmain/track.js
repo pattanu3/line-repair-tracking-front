@@ -62,15 +62,17 @@ async function initTrackPage() {
 
 // 4. ดึงข้อมูลจาก FastAPI
 async function fetchRepairData(lineUserId) {
+    console.log("fetchRepairData Work");
+    
     try {
-        const response = await fetch(`${API_BASE_URL}/repairs/track/${lineUserId}`);
-        
+        const response = await fetch(`${API_BASE_URL}/repairs/track?line_user_id=${line_user_id}`);
         if (!response.ok) {
             alert("ยังไม่มีข้อมูลแจ้งซ่อมในระบบ หรือซ่อมเสร็จสิ้นไปแล้วครับ");
             return;
         }
         
         const data = await response.json();
+        console.log("JSON DATA",data);
         
         // ก. อัปเดตข้อมูลลูกค้าลงในหน้าต่างรายละเอียด
         document.querySelector('.queue-value').innerText = data.queueId || '-';
