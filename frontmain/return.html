@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I SOM CPU - ส่งข้อมูลการซ่อม</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="mobile-container">
+    
+    <div class="top-header">
+        <div>
+            <h1>I SOM CPU</h1>
+            <p>isomcpu.repair.net</p>
+        </div>
+        <i class="fa-solid fa-xmark fs-3 text-secondary"></i>
+    </div>
+
+    <div class="welcome-banner p-0">  
+        <div class="user-info-box">
+            <img src="https://placehold.co/100x100?text=Profile" alt="Profile" class="profile-pic">
+            <div class="welcome-text">
+                <h2>ยินดีต้อนรับ</h2>
+                <h3>- Nutt -</h3>
+            </div>
+        </div>
+        <div class="welcome-instruction pe-3" style="font-size: 20px;">กรุณากรอกข้อมูลเพื่อรับเครื่อง</div>
+    </div>
+
+    <div class="form-container">
+        <form>
+            <div class="mb-3">
+                <label class="form-label">ชื่อ-นามสกุล :</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </span>
+                    <input type="text" id="inputName" class="form-control" placeholder="กรุณากรอกชื่อ-นามสกุล">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">เบอร์โทรศัพท์ :</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                    </span>
+                    <input type="tel" id="inputPhone" class="form-control" placeholder="กรุณากรอกเบอร์โทรศัพท์ 10 หลัก">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">ที่อยู่รับเครื่อง :</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                    </span>
+                    <input type="text" id="inputAddressMain" class="form-control" placeholder="บ้านเลขที่ / หมู่ / ซอย / ถนน">
+                </div>
+                
+                <div class="row g-2 mb-2">
+                    <div class="col-6">
+                        <select id="inputSubDistrict" class="form-select no-icon">
+                            <option selected>ตำบล/แขวง</option>
+                            <option value="บัง">บัง</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <select id="inputDistrict" class="form-select no-icon">
+                            <option selected>อำเภอ/เขต</option>
+                            <option value="ลาดบัง">ลาดบัง</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <select id="inputProvince" class="form-select no-icon">
+                            <option selected>จังหวัด</option>
+                            <option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" id="inputZip" class="form-control no-icon" placeholder="รหัสไปรษณีย์">
+                    </div>
+                </div>
+            </div>
+
+            <hr class="text-muted my-4">
+
+            <div class="row mb-3 align-items-center">
+                <div class="col-3 text-end"><label class="form-label m-0">ประเภท :</label></div>
+                <div class="col-9">
+                    <select id="inputDevice" class="form-select no-icon">
+                        <option selected>กรุณาเลือกประเภท</option>
+                        <option value="pc">PC Desktop</option>
+                        <option value="notebook">Notebook/Laptop</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr class="text-muted my-4">
+
+            <div class="row g-2">
+                <div class="col-6">
+                    <label class="form-label">ยืนยันนัดรับเครื่องวันที่ :</label>
+                    <div class="input-group">
+                        <input type="date" id="inputDate" class="form-control">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">ยืนยันนัดรับเครื่องเวลา :</label>
+                    <div class="input-group">
+                        <input type="time" id="inputTime" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="submit-btn" data-bs-toggle="modal" data-bs-target="#confirmModal" onclick="copyData()" style="width: 50%;">ยืนยันข้อมูล</button>
+
+        </form>
+    </div>
+</div>
+
+
+<!-- ############################## Modal ############################## -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content custom-modal">
+            
+            <div class="modal-top text-center">
+                <h4 class="mb-1 fw-bold">ยืนยันส่งข้อมูลใช่ไหม?</h4>
+                <p class="mb-0 text-light">โปรดตรวจสอบข้อมูลก่อนส่ง</p>
+            </div>
+            
+            <div class="modal-bottom">
+                
+                <div class="confirm-data-row">
+                    <div class="icon-circle me-2"><i class="fa-solid fa-user"></i></div>
+                    <span id="modalName">...</span>
+                </div>
+                <div class="confirm-data-row">
+                    <div class="icon-circle me-2"><i class="fa-solid fa-phone"></i></div>
+                    <span id="modalPhone">...</span>
+                </div>
+                <div class="confirm-data-row">
+                    <div class="icon-circle me-2 align-self-start mt-1"><i class="fa-solid fa-location-dot"></i></div>
+                    <span id="modalAddress">...</span>
+                </div>
+                <div class="confirm-data-row">
+                    <div class="icon-circle me-2"><i class="fa-solid fa-laptop"></i></div>
+                    <span id="modalDevice">...</span>
+                </div>
+                <div class="confirm-data-row">
+                    <div class="icon-circle me-2"><i class="fa-solid fa-circle-question"></i></div>
+                    <span id="modalProblem">...</span>
+                </div>
+                <div class="confirm-data-row">
+                    <div class="icon-circle me-2"><i class="fa-regular fa-calendar"></i></div>
+                    <span>วันนัดรับเครื่อง: <span id="modalDate">...</span></span>
+                </div>
+                <div class="confirm-data-row">
+                    <div class="icon-circle me-2"><i class="fa-regular fa-clock"></i></div>
+                    <span>ช่วงเวลา: <span id="modalTime">...</span></span>
+                </div>
+
+                <div class="d-flex justify-content-center gap-4 mt-4">
+                    <button type="button" class="btn btn-cancel rounded-pill px-4" data-bs-dismiss="modal">แก้ไขข้อมูล</button>
+                    <button type="button" class="btn btn-confirm rounded-pill px-4" onclick="submitReturnAndTrack()">ยืนยัน</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    function submitReturnAndTrack() {
+        window.location.href = 'track.html?stage=11';
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

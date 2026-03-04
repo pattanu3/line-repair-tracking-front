@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I SOM CPU - คิวงานปัจจุบัน</title>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <title>I SOM CPU - ติดตามสถานะ</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -18,15 +20,6 @@
 <body>
 
 <div class="mobile-container">
-    
-    <div class="top-header">
-        <div>
-            <h1>I SOM CPU</h1>
-            <p>isomcpu.repair.net</p>
-        </div>
-        <i class="fa-solid fa-xmark fs-3 text-secondary"></i>
-    </div>
-
     <div class="welcome-banner p-0">  
         <div class="user-info-box">
             <img src="https://placehold.co/100x100?text=Profile" alt="Profile" class="profile-pic">
@@ -38,25 +31,24 @@
         <div class="welcome-instruction pe-3">ติดตามสถานะ</div>
     </div>
 
-    <div class="form-container flex-grow-1">
+<div class="form-container flex-grow-1" style="padding: 30px 40px;">
         
-        <h5 class="queue-tag fw-bold mb-4">
-            <i class="fa-solid fa-address-book me-2 text-primary"></i>คิวงาน :
-        </h5>
-        <div class="timeline-container" id="timelineBox">
+        <div class="mb-4">
+            <div class="queue-number-box">
+                <div class="icon-circle me-3">
+                    <i class="fa fa-address-book"></i>
+                </div>
+                <h5 class="queue-label fw-bold">คิวงาน : <span class="queue-value">AC330</span></h5>
             </div>
-        <button class="btn btn-outline-primary w-100 mt-3 mb-2" onclick="simulateNextStep()">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> จำลองช่างอัปเดตสถานะ
-        </button>
+        </div>
 
-    </div>
+        <div class="timeline-container" id="timelineBox" style="margin-bottom: 10px;">
+        </div>
 
-    <div class="form-container">
-        <div class="row g-3">
-
+        <div class="info row g-3">
             <div class="modal-bottom">
                 <hr class="linetrack">
-                <div class="confirm-data-row">
+                <div class="confirm-data-row" style="padding-top: 10px;">
                     <div class="icon-circle me-2"><i class="fa-solid fa-user"></i></div>
                     <span id="modalName">...</span>
                 </div>
@@ -85,7 +77,135 @@
                     <span>ช่วงเวลา: <span id="modalTime">...</span></span>
                 </div>
             </div>
+        </div>
 
+        <button class="btn btn-outline-primary w-100 mt-4 mb-2" onclick="simulateNextStep()">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> จำลองช่างอัปเดตสถานะ
+        </button>
+    </div>
+</div>
+
+<!-- ############################## Image Modal ############################## -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 85%;">
+            
+            <div class="modal-header border-0 pb-3 position-relative" style="background-color: #000f30;">
+                <h5 class="modal-title fw-bold w-100 text-center" style="color: white;">รูปภาพ/วิดีโอ</h5>
+                
+                <button type="button" class="btn-close bg-white rounded-circle position-absolute" data-bs-dismiss="modal" aria-label="Close" style="right: 1.5rem; opacity: 0.9; padding: 0.5rem;"></button>
+            </div>
+            
+            <div class="modal-body p-4">
+                
+            <div class="mb-4">
+                <h6 class="fw-bold" style="color: #000f30; font-size: 14px;">ก่อนซ่อม : </h6>
+                <div class="position-relative d-flex align-items-center" style="margin: 0% 10%;">
+                    <button class="gallery-arrow left-arrow shadow-sm" onclick="scrollGallery('gallery-before', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-scroll d-flex gap-2 w-75" style="margin-left: 35px;" id="gallery-before"></div>
+                    <button class="gallery-arrow right-arrow shadow-sm" onclick="scrollGallery('gallery-before', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h6 class="fw-bold" style="color: #000f30; font-size: 14px;">เครื่องถึงร้าน : </h6>
+                <div class="position-relative d-flex align-items-center" style="margin: 0% 10%;">
+                    <button class="gallery-arrow left-arrow shadow-sm" onclick="scrollGallery('gallery-arrive', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-scroll d-flex gap-2 w-75" style="margin-left: 35px;" id="gallery-arrive"></div>
+                    <button class="gallery-arrow right-arrow shadow-sm" onclick="scrollGallery('gallery-arrive', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h6 class="fw-bold" style="color: #000f30; font-size: 14px;">อยู่ระหว่างการซ่อม : </h6>
+                <div class="position-relative d-flex align-items-center" style="margin: 0% 10%;">
+                    <button class="gallery-arrow left-arrow shadow-sm" onclick="scrollGallery('gallery-during', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-scroll d-flex gap-2 w-100" style="margin-left: 35px;" id="gallery-during"></div>
+                    <button class="gallery-arrow right-arrow shadow-sm" onclick="scrollGallery('gallery-during', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <h6 class="fw-bold" style="color: #000f30; font-size: 14px;">ซ่อมเสร็จแล้ว : </h6>
+                <div class="position-relative d-flex align-items-center" style="margin: 0% 10%;">
+                    <button class="gallery-arrow left-arrow shadow-sm" onclick="scrollGallery('gallery-after', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-scroll d-flex gap-2 w-100" style="margin-left: 35px;" id="gallery-after"></div>
+                    <button class="gallery-arrow right-arrow shadow-sm" onclick="scrollGallery('gallery-after', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ########################### Quotation Modal ########################### -->
+<div class="modal fade" id="quotationModal" tabindex="-1" aria-labelledby="quotationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px; overflow: hidden; width: 85%;">
+            
+            <div class="modal-header border-0 pb-3 position-relative" style="background-color: #001033;">
+                <h5 class="modal-title fw-bold w-100 text-center" style="color: white; font-size: 24px;">ใบเสนอราคา</h5>
+                <button type="button" class="btn-close bg-white rounded-circle position-absolute" data-bs-dismiss="modal" aria-label="Close" style="right: 1.5rem; opacity: 0.9; padding: 0.5rem;"></button>
+            </div>
+
+            <div class="modal-body p-4" style="margin: -20px auto;">
+                <div class="d-flex justify-content-between align-items-center" style="border-bottom: 1px solid #eee; margin: 10px 10px;">
+                    
+                    <div class="queue-number-box d-flex align-items-center" style="background-color: #00194f">
+                        <div class="icon-circle me-3" style="width: 25px; height: 25px; background-color: #f8f9fa; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #00194f;">
+                            <i class="fa fa-address-book fs-10" style="color: #00194f"></i>
+                        </div>
+                        <h5 class="queue-label fw-bold mb-0" style="font-size: 16px;">คิวงาน : <span class="queue-value" style="font-size: 16px;">A012</span></h5>
+                    </div>
+
+                    <div class="text-muted" style="font-size: 12px;">
+                        <light>วันที่ออกใบเสนอราคา : </light> <span id="quoteDate" class="text-dark"></span>
+                    </div>
+                    
+                </div>
+
+                <div class="mb-2" style="font-size: 15px;">
+                    <i class="fa fa-user fs-10"></i>
+                    <strong style="color: #001f61;">ลูกค้า : </strong> <strong style="color: #001f61;" id="quoteName"></strong>
+                    <light style="font-size: 10px;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;อุปกรณ์ : </light> <light id="quoteDevice" style="font-size: 10px;"></light>
+                </div>
+
+                <div class="mb-4 " style="font-size: 10px;">
+                    <light>อาการ/ปัญหา(ที่แจ้งจากลูกค้า) : &emsp;</light> <light id="quoteProblem"></light>
+                </div>
+
+                <hr style="border-top: 2px solid #474747; margin: -10px 0px 0px 0px;">
+                <div style="margin: 10px 0px -5px 0px; color: #001f61;"><strong>รายการซ่อม / ค่าใช้จ่าย</strong></div>
+
+                <div class="table-responsive">
+                    <table class="table table-borderless mb-0" style="margin-top: 10px;">
+                        <thead style="border-bottom: 2px solid #eee;">
+                            <tr class="text-secondary" style="font-size: 14px;">
+                                <th scope="col" class="py-0 itemList" style="background-color: #c9c9c9; border-top-left-radius: 50px; border-bottom-left-radius: 50px;">&emsp;รายการ</th>
+                                <th scope="col" class="itemList text-center" style="width: 70px; background-color: #c9c9c9;">จำนวน</th>
+                                <th scope="col" class="itemList text-center" style="width: 70px; background-color: #c9c9c9;">ราคา</th>
+                                <th scope="col" class="itemList text-center" style="width: 70px; background-color: #c9c9c9; border-top-right-radius: 50px; border-bottom-right-radius: 50px;">รวม</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quoteTableBody" style="font-size: 12px;">
+                            </tbody>
+                        <tfoot style="border-top: 2px solid #eee;">
+                            <tr>
+                                <td class="text-end fw-bold pt-3 text-center"></td>
+                                <td class="text-end pt-3" style="font-weight: 100; font-size: 14px; color: white; background-color: #00194f; border-top-left-radius: 50px; border-bottom-left-radius: 50px;">ยอดสุทธิ</td>
+                                <td class="text-end fw-bold pt-3 text-center" style="color: white; font-size: 16px; background-color: #00194f;"><span id="quoteTotalCost"></span></td>
+                                <td class="text-end pt-3 text-center" style="color: white; font-size: 14px; background-color: #00194f; border-top-right-radius: 50px; border-bottom-right-radius: 50px;">บาท</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <hr style="border-top: 2px solid #474747;">
+
+                <div id="quoteActionArea" style="margin: -10px auto 10px auto;"></div>
+
+            </div>
         </div>
     </div>
 </div>
