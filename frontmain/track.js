@@ -65,13 +65,34 @@ async function fetchRepairData(lineUserId) {
     while (!lineUserId) {
         console.log("กรุณารอให้ระบบโหลด LINE ID ให้สำเร็จก่อนครับ");
     }
-    try {
-        const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${lineUserId}`);
+    // try {
+    //     const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${lineUserId}`);
+    //     if (!response.ok) {
+    //         alert("ยังไม่มีข้อมูลแจ้งซ่อมในระบบ หรือซ่อมเสร็จสิ้นไปแล้วครับ");
+    //         return;
+    //     }
+     try {
+        // ✅ เพิ่ม headers เข้าไปเพื่อข้ามหน้าต่างของ ngrok
+        const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${lineUserId}`, {
+            method: 'GET',
+            headers: {
+                'ngrok-skip-browser-warning': '69420', // คำสั่งข้ามหน้าแจ้งเตือน ngrok
+                'Content-Type': 'application/json'
+            }
+        });
+
         if (!response.ok) {
-            alert("ยังไม่มีข้อมูลแจ้งซ่อมในระบบ หรือซ่อมเสร็จสิ้นไปแล้วครับ");
+            // ถ้าไม่ใช่ 200 OK ให้ลองอ่านค่าว่า Backend พ่น Error อะไรมา
+            let errorMsg = "ไม่พบข้อมูลแจ้งซ่อม";
+            try {
+                const errData = await response.json();
+                if (errData.detail) errorMsg = errData.detail;
+                window.location.href = 'notfound_track.html';
+            } catch (e) {} // ถ้าพังตอนอ่าน json ให้ข้ามไป
+
+            alert(errorMsg);
             return;
-        }
-        
+        }   
         const data = await response.json();
         console.log("JSON DATA",data);
         
@@ -92,7 +113,7 @@ async function fetchRepairData(lineUserId) {
         renderTimeline();
 
     } catch(error) {
-        console.error("Fetch API Error:", error);
+        console.error("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์:", error);
     }
 }
 
