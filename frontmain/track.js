@@ -63,9 +63,13 @@ async function initTrackPage() {
 // 4. ดึงข้อมูลจาก FastAPI
 async function fetchRepairData(lineUserId) {
     console.log("fetchRepairData Work");
-    
+    const lineIdFromSpan = document.getElementById('user-id').innerText;
+    // ตรวจสอบเบื้องต้น ถ้ายังโหลดไม่เสร็จไม่ให้ส่ง
+    while (!lineIdFromSpan) {
+        console.log("กรุณารอให้ระบบโหลด LINE ID ให้สำเร็จก่อนครับ");
+    }
     try {
-        const response = await fetch(`${API_BASE_URL}/repairs/track?line_user_id=${line_user_id}`);
+        const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${lineIdFromSpan}`);
         if (!response.ok) {
             alert("ยังไม่มีข้อมูลแจ้งซ่อมในระบบ หรือซ่อมเสร็จสิ้นไปแล้วครับ");
             return;
@@ -288,15 +292,15 @@ function simulateNextStep() {
     }
 }
 
-function loadRequestDetails() {
-    document.getElementById("modalName").innerText = repairRequestData.name;
-    document.getElementById("modalPhone").innerText = repairRequestData.phone;
-    document.getElementById("modalAddress").innerText = repairRequestData.address;
-    document.getElementById("modalDevice").innerText = repairRequestData.device;
-    document.getElementById("modalProblem").innerText = repairRequestData.problem;
-    document.getElementById("modalDate").innerText = repairRequestData.date;
-    document.getElementById("modalTime").innerText = repairRequestData.time;
-}
+// function loadRequestDetails() {
+//     document.getElementById("modalName").innerText = repairRequestData.name;
+//     document.getElementById("modalPhone").innerText = repairRequestData.phone;
+//     document.getElementById("modalAddress").innerText = repairRequestData.address;
+//     document.getElementById("modalDevice").innerText = repairRequestData.device;
+//     document.getElementById("modalProblem").innerText = repairRequestData.problem;
+//     document.getElementById("modalDate").innerText = repairRequestData.date;
+//     document.getElementById("modalTime").innerText = repairRequestData.time;
+// }
 
 function renderGallery(containerId, imagesArray) {
     const container = document.getElementById(containerId);
