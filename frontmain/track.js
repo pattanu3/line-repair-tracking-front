@@ -34,6 +34,8 @@ async function initTrackPage() {
         await liff.init({ liffId: LIFF_ID });
         if (liff.isLoggedIn()) {
             const profile = await liff.getProfile();
+            const userId = profile.userId;
+
             console.log(profile.userId);
             console.log(profile.displayName);
             console.log(profile.pictureUrl);
@@ -50,7 +52,7 @@ async function initTrackPage() {
             if(profilePic) profilePic.src = profile.pictureUrl || "https://placehold.co/100x100?text=Profile";
 
             // ไปดึงข้อมูลงานซ่อมจาก Database
-            fetchRepairData(profile.userId);
+            fetchRepairData();
         } else {
             liff.login();
         }
@@ -61,7 +63,7 @@ async function initTrackPage() {
 }
 
 // 4. ดึงข้อมูลจาก FastAPI
-async function fetchRepairData(lineUserId) {
+async function fetchRepairData() {
     console.log("fetchRepairData Work");
     const lineIdFromSpan = document.getElementById('user-id').innerText;
     // ตรวจสอบเบื้องต้น ถ้ายังโหลดไม่เสร็จไม่ให้ส่ง
@@ -485,5 +487,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-loadRequestDetails();
+// loadRequestDetails();
 renderTimeline();
