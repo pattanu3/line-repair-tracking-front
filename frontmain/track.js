@@ -52,7 +52,7 @@ async function initTrackPage() {
             if(profilePic) profilePic.src = profile.pictureUrl || "https://placehold.co/100x100?text=Profile";
 
             // ไปดึงข้อมูลงานซ่อมจาก Database
-            fetchRepairData();
+            fetchRepairData(userId);
         } else {
             liff.login();
         }
@@ -63,15 +63,14 @@ async function initTrackPage() {
 }
 
 // 4. ดึงข้อมูลจาก FastAPI
-async function fetchRepairData() {
+async function fetchRepairData(userId) {
     console.log("fetchRepairData Work");
-    const lineIdFromSpan = document.getElementById('user-id').innerText;
     // ตรวจสอบเบื้องต้น ถ้ายังโหลดไม่เสร็จไม่ให้ส่ง
-    while (!lineIdFromSpan) {
+    while (!userId) {
         console.log("กรุณารอให้ระบบโหลด LINE ID ให้สำเร็จก่อนครับ");
     }
     try {
-        const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${lineIdFromSpan}`);
+        const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${userId}`);
         if (!response.ok) {
             alert("ยังไม่มีข้อมูลแจ้งซ่อมในระบบ หรือซ่อมเสร็จสิ้นไปแล้วครับ");
             return;
