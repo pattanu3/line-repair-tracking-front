@@ -62,15 +62,6 @@ async function initTrackPage() {
 async function fetchRepairData(lineUserId) {
     console.log("fetchRepairData Work");
     // ตรวจสอบเบื้องต้น ถ้ายังโหลดไม่เสร็จไม่ให้ส่ง
-    while (!lineUserId) {
-        console.log("กรุณารอให้ระบบโหลด LINE ID ให้สำเร็จก่อนครับ");
-    }
-    // try {
-    //     const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${lineUserId}`);
-    //     if (!response.ok) {
-    //         alert("ยังไม่มีข้อมูลแจ้งซ่อมในระบบ หรือซ่อมเสร็จสิ้นไปแล้วครับ");
-    //         return;
-    //     }
      try {
         // ✅ เพิ่ม headers เข้าไปเพื่อข้ามหน้าต่างของ ngrok
         const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/track?line_user_id=${lineUserId}`, {
@@ -97,6 +88,7 @@ async function fetchRepairData(lineUserId) {
         console.log("JSON DATA",data);
         
         // ก. อัปเดตข้อมูลลูกค้าลงในหน้าต่างรายละเอียด
+        document.getElementById("repairId").innerText = data.id || '-';
         document.querySelector('.queue-value').innerText = data.queueId || '-';
         document.getElementById("modalName").innerText = data.fullName || '-';
         document.getElementById("modalPhone").innerText = data.phoneNumber || '-';
@@ -116,7 +108,7 @@ async function fetchRepairData(lineUserId) {
         console.error("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์:", error);
     }
 }
-
+  
 //--------------------------------------------------------------------------------------------------
 
 
@@ -381,49 +373,84 @@ function renderGallery(containerId, imagesArray) {
     container.innerHTML = html;
 }
 
-function showQuotationModal() {
-    document.getElementById("quoteName").innerText = repairRequestData.name;
-    document.getElementById("quoteDevice").innerText = repairRequestData.device;
-    document.getElementById("quoteProblem").innerText = repairRequestData.problem;
-    document.getElementById("quoteDate").innerText = repairRequestData.date;
+async function showQuotationModal(repairID) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/repairs/quotations?repair_id=${repairID}`, {
+            method: 'GET',
+            headers: {
+                'ngrok-skip-browser-warning': '69420',
+                'Content-Type': 'application/json'
+            }
+        });
 
-    const tableBody = document.getElementById("quoteTableBody");
-    let tableHtml = "";
-    let totalCost = 0;
-    let rowTotal = 0;
+        if (!response.ok) {
+            let errorMsg = "ไม่พบข้อมูลใบเสนอราคา";
+            try {
+                const errData = await response.json();
+                if (errData.detail) errorMsg = errData.detail;
+            } catch (e) {}
+            alert(errorMsg);
+            return;
+        }
 
-    quotationItems.forEach(item => {
-        rowTotal = item.amount * item.price;
-        tableHtml += `
-            <tr>
-                <td class="pt-3 text-start">&emsp;${item.name}</td>
-                <td class="pt-3 text-center">${item.amount}</td>
-                <td class="pt-3 text-center">${item.price.toLocaleString()}</td>
-                <td class="pt-3 text-center">${rowTotal.toLocaleString()}</td>
-            </tr>
-        `;
-        totalCost += (item.amount * item.price);
-    });
+        const data = await response.json();
+        console.log("JSON DATA", data);
 
-    tableBody.innerHTML = tableHtml;
-    document.getElementById("quoteTotalCost").innerText = totalCost.toLocaleString();
+        // 1. ดึงข้อมูลจากก้อน 'repair' มาแสดงหัวเอกสาร
+        document.getElementById("quoteName").innerText = data.repair.fullName || '-';
+        document.getElementById("quoteDevice").innerText = data.repair.deviceType || '-';
+        document.getElementById("quoteProblem").innerText = data.repair.problemType || '-';
+        
+        // ใช้วันที่นัดรับเครื่องเป็นวันที่ในใบเสนอราคา หรือใช้ New Date() แทนได้
+        document.getElementById("quoteDate").innerText = data.repair.pickupDate || '-';
+        
+        // 2. จัดการตารางรายการซ่อมจาก 'items'
+        const tableBody = document.getElementById("quoteTableBody");
+        let tableHtml = "";
+        
+        // ตรวจสอบว่ามีรายการใน items หรือไม่
+        if (data.items && data.items.length > 0) {
+            data.items.forEach(item => {
+                const rowTotal = item.quantity * item.price;
+                tableHtml += `
+                    <tr>
+                        <td class="pt-3 text-start">&emsp;${item.productName}</td>
+                        <td class="pt-3 text-center">${item.quantity}</td>
+                        <td class="pt-3 text-center">${item.price.toLocaleString()}</td>
+                        <td class="pt-3 text-center">${rowTotal.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+        }
 
-    currentTotalCost = totalCost;
-    renderQuoteApproval();
+        tableBody.innerHTML = tableHtml;
+        
+        // 3. แสดงยอดรวมสุทธิจาก 'totalPrice'
+        document.getElementById("quoteTotalCost").innerText = data.totalPrice.toLocaleString();
+        currentTotalCost = data.totalPrice;
 
-    const quoteModal = new bootstrap.Modal(document.getElementById('quotationModal'));
-    quoteModal.show();
+        // 4. ส่งหมายเหตุจากช่างไปยังพื้นที่ Action
+        renderQuoteApproval(data.technicianNote);
+
+        const quoteModal = new bootstrap.Modal(document.getElementById('quotationModal'));
+        quoteModal.show();
+
+    } catch(error) {
+        console.error("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์:", error);
+    }
 }
 
 // ############################ Quotation-sequence ############################
 let currentTotalCost = 0;
 
-function renderQuoteApproval() {
+
+// ปรับปรุงฟังก์ชัน renderQuoteApproval ให้รับค่า Note มาแสดง
+function renderQuoteApproval(techNote) {
     const container = document.getElementById("quoteActionArea");
     container.innerHTML = `
         <strong style="color: #001f61; font-size: 16px;">หมายเหตุจากช่าง</strong>
         <div class="p-3 mb-3 rounded" style="background-color: #f8f9fa; border: 1px solid #e9ecef; margin-left: 20px">
-            <p class="text-muted mb-0" style="font-size: 14px;">ปกติดีครับ</p>
+            <p class="text-muted mb-0" style="font-size: 14px;">${techNote || 'ไม่มีหมายเหตุเพิ่มเติม'}</p>
         </div>
         <div class="w-100 mt-4 clearfix">
             <button class="btn rounded-pill px-4 shadow-sm float-start" onclick="handleRejectQuote()" style="background-color: #dfdfdf; font-size: 12px;">ยกเลิกการซ่อม</button>
@@ -431,6 +458,19 @@ function renderQuoteApproval() {
         </div>
     `;
 }
+// function renderQuoteApproval() {
+//     const container = document.getElementById("quoteActionArea");
+//     container.innerHTML = `
+//         <strong style="color: #001f61; font-size: 16px;">หมายเหตุจากช่าง</strong>
+//         <div class="p-3 mb-3 rounded" style="background-color: #f8f9fa; border: 1px solid #e9ecef; margin-left: 20px">
+//             <p class="text-muted mb-0" style="font-size: 14px;">ปกติดีครับ</p>
+//         </div>
+//         <div class="w-100 mt-4 clearfix">
+//             <button class="btn rounded-pill px-4 shadow-sm float-start" onclick="handleRejectQuote()" style="background-color: #dfdfdf; font-size: 12px;">ยกเลิกการซ่อม</button>
+//             <button class="btn rounded-pill px-4 shadow-sm float-end" onclick="handleApproveQuote()" style="background-color: #1549b8; color: white; font-size: 14px;">ยืนยันการซ่อม</button>
+//         </div>
+//     `;
+// }
 
 function handleRejectQuote() {
     currentStageIndex = 11;
