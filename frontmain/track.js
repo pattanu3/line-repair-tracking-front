@@ -38,7 +38,7 @@ async function initTrackPage() {
 
             console.log(profile);
             console.log(userId);
-        
+            document.getElementById('user-id').innerText = userId;
             // แสดงผลบนหน้าจอ
             // อัปเดตชื่อ LINE ลูกค้าบน Banner
             const welcomeText = document.querySelector('.welcome-text h3');
@@ -88,7 +88,7 @@ async function fetchRepairData(lineUserId) {
         console.log("JSON DATA",data);
         
         // ก. อัปเดตข้อมูลลูกค้าลงในหน้าต่างรายละเอียด
-        document.getElementById("repairId").innerText = data.id || '-';
+        document.getElementById("repairId").innerText = data.id;
         document.querySelector('.queue-value').innerText = data.queueId || '-';
         document.getElementById("modalName").innerText = data.fullName || '-';
         document.getElementById("modalPhone").innerText = data.phoneNumber || '-';
@@ -373,7 +373,9 @@ function renderGallery(containerId, imagesArray) {
     container.innerHTML = html;
 }
 
-async function showQuotationModal(repairID) {
+async function showQuotationModal() {
+    repairID = document.getElementById('repairId');
+    console.log("repairId",repairID)
     try {
         const response = await fetch(`${API_BASE_URL}/repairs/quotations?repair_id=${repairID}`, {
             method: 'GET',
