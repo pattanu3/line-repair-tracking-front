@@ -375,9 +375,9 @@ function renderGallery(containerId, imagesArray) {
 
 async function showQuotationModal() {
     repairID = document.getElementById('repairId');
-    console.log("repairId",repairID)
+    console.log(`repairId ${repairID}`);
     try {
-        const response = await fetch(`${API_BASE_URL}/repairs/quotations?repair_id=${repairID}`, {
+        const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/quotations?repair_id=${repairID}`, {
             method: 'GET',
             headers: {
                 'ngrok-skip-browser-warning': '69420',
@@ -392,11 +392,12 @@ async function showQuotationModal() {
                 if (errData.detail) errorMsg = errData.detail;
             } catch (e) {}
             alert(errorMsg);
+            console.log(errorMsg);
             return;
         }
 
         const data = await response.json();
-        console.log("JSON DATA", data);
+        console.log("Quotation DATA", data);
 
         // 1. ดึงข้อมูลจากก้อน 'repair' มาแสดงหัวเอกสาร
         document.getElementById("quoteName").innerText = data.repair.fullName || '-';
