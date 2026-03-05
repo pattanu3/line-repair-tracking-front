@@ -162,7 +162,7 @@ const allStages = [
     { title: "ส่งใบเสนอราคา", 
         desc: "รบกวนลูกค้ายืนยันเพื่อให้ร้านดำเนินการซ่อมต่อได้ครับ", 
         color: "#e6442e",
-        extraHTML: `<button class="btn btn-sm btn-outline-secondary mt-1 w-40" onclick="showQuotationModal()" style="border-radius: 20px; background-color:#09348a; color: white"><i class="fa-solid fa-list-alt"></i> คลิกเพื่อดูรายละเอียดใบเสนอราคา</button>` },
+        extraHTML: `<button class="btn btn-sm btn-outline-secondary mt-1 w-40" onclick="showQuotationModal(document.getElementById('repairId').innerText)" style="border-radius: 20px; background-color:#09348a; color: white"><i class="fa-solid fa-list-alt"></i> คลิกเพื่อดูรายละเอียดใบเสนอราคา</button>` },
     { title: "ชำระเงินแล้ว", 
         desc: "ได้รับการทำระเงินเรียบร้อยแล้ว ทางร้านจะดำเนินการซ่อมทันทีครับ", 
         color: "#79d163",
@@ -373,8 +373,7 @@ function renderGallery(containerId, imagesArray) {
     container.innerHTML = html;
 }
 
-async function showQuotationModal() {
-    repairID = document.getElementById('repairId').innerText;
+async function showQuotationModal(repairID) {
     console.log(`repairId ${repairID}`);
     try {
         const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/quotations?repair_id=${repairID}`, {
