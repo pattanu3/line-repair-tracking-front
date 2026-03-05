@@ -374,7 +374,7 @@ function renderGallery(containerId, imagesArray) {
 }
 
 async function showQuotationModal() {
-    repairID = document.getElementById('repairId');
+    repairID = document.getElementById('repairId').innerText;
     console.log(`repairId ${repairID}`);
     try {
         const response = await fetch(`https://uncautiously-overwealthy-margie.ngrok-free.dev/repairs/quotations?repair_id=${repairID}`, {
